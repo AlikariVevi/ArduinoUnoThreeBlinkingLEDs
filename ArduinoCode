@@ -1,0 +1,65 @@
+// Pins
+int ledPinRed = 12;
+int ledPinGreen = 13;
+int ledPinBlue = 11;
+
+// leds states initiallization
+int ledStateRed = LOW;
+int ledStateGreen =HIGH;
+int ledStateBlue = LOW;
+
+
+//store time variables
+unsigned long previousMilSec = 0;
+const long blingInterval = 1000; //milliseconds
+
+// the setup function runs once when you press reset or power the board
+void setup() {
+  // initialize digital pin LED_BUILTIN as an output.
+  pinMode(ledPinGreen, OUTPUT);
+  pinMode(ledPinBlue, OUTPUT);
+  pinMode(ledPinRed, OUTPUT);
+}
+
+// the loop function runs over and over again forever
+void loop() {
+
+  unsigned long currentMilSec = millis();
+  // initiallizing lighting loop
+  if(currentMilSec - previousMilSec >= blingInterval){
+    previousMilSec = currentMilSec;
+  }
+  //during the first 1/3 of the interval the red led is in HIGH 
+  if(currentMilSec - previousMilSec < blingInterval/3){
+      if(ledStateRed == LOW){
+          ledStateRed = HIGH;
+          ledStateGreen = LOW;
+          ledStateBlue = LOW;
+        }
+      digitalWrite(ledPinRed, ledStateRed);
+      digitalWrite(ledPinGreen, ledStateGreen); 
+      digitalWrite(ledPinBlue, ledStateBlue);
+   }
+   //during the second 1/3 of the interval the blue led is in HIGH  
+   if(currentMilSec - previousMilSec>= blingInterval/3 && currentMilSec - previousMilSec < blingInterval*2/3){
+      if(ledStateBlue == LOW){
+          ledStateRed = LOW;
+          ledStateGreen = LOW;
+          ledStateBlue = HIGH;
+        }
+      digitalWrite(ledPinRed, ledStateRed);
+      digitalWrite(ledPinGreen, ledStateGreen); 
+      digitalWrite(ledPinBlue, ledStateBlue);
+   }
+  //during the third 1/3 of the interval the green led is in HIGH
+  if(currentMilSec - previousMilSec >= blingInterval*2/3){
+      if(ledStateGreen == LOW){
+          ledStateRed = LOW;
+          ledStateGreen = HIGH;
+          ledStateBlue = LOW;
+        }
+      digitalWrite(ledPinRed, ledStateRed); 
+      digitalWrite(ledPinGreen, ledStateGreen); 
+      digitalWrite(ledPinBlue, ledStateBlue);
+   }  
+}
